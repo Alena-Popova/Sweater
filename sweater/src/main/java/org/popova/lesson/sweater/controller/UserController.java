@@ -3,8 +3,10 @@ package org.popova.lesson.sweater.controller;
 import org.popova.lesson.sweater.domain.Role;
 import org.popova.lesson.sweater.domain.User;
 import org.popova.lesson.sweater.repos.UserRepo;
+import org.popova.lesson.sweater.servise.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +18,18 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/user")
-@PreAuthorize("hasAuthority('ADMIN')")
 public class UserController {
     @Autowired
-    private UserRepo userRepo;
+    private UserService userService;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String userList( Model model) {
-        model.addAttribute("users", userRepo.findAll());
+        model.addAttribute("users", userService.findAll());
         return "userlist";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("{user}")
     public String userEditForm(@PathVariable User user, Model model) {
         model.addAttribute("user", user);
@@ -35,24 +38,32 @@ public class UserController {
         return "userEdit";
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public String saveUser(
             @RequestParam String username,
             @RequestParam Map<String, String> form,
             @RequestParam("userId") User user) {
 
-        user.setUsername(username);
+       userService.saveUser(username, form, user);
+       return "redirect:/user";
+    }
 
-        Set<String> roles = Arrays.stream(Role.values()).map(Role::name).collect(Collectors.toSet());
-        user.getRoles().clear();
-        for (String str : form.keySet()) {
-            if (roles.contains(str)) {
-                user.getRoles().add(Role.valueOf(str));
-            }
-        }
+    @GetMapping("profile")
+    public String getProfile(Model model, @AuthenticationPrincipal User user) {
+        model.addAttribute("username", user.getUsername());
+        model.addAttribute("email", user.getEmail());
 
-        userRepo.save(user);
-        return "redirect:/user";
+        return "profile";
+    }
+
+    @PostMapping("profile")
+    public String updateProfile(@AuthenticationPrincipal User user,
+                                @RequestParam String password,
+                                @RequestParam String email) {
+
+        userService.updateUser(user, password, email);
+        return "redirect:/user/profile";
     }
 
 }
