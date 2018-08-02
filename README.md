@@ -1,4 +1,4 @@
-h1 Sweater
+Sweater
 =====================
 
 ***
@@ -12,6 +12,13 @@ Nice to explore code)))
 ***
 
 If you can suggest me improvements, welcom to try.
+***
 
-[My second git ]<https://github.com/Helena-Popova>
-[My linkedIn ]<https://www.linkedin.com/in/алена-попова-b3a240163>
+[My second git ]
+
+<https://github.com/Helena-Popova>
+
+***
+
+[My linkedIn ]
+<https://www.linkedin.com/in/алена-попова-b3a240163>
