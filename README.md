@@ -20,5 +20,6 @@ If you can suggest me improvements, welcom to try.
 
 ***
 
-[My linkedIn ]
-<https://www.linkedin.com/in/алена-попова-b3a240163>
+[My linkedIn ] 
+
+<https://www.linkedin.com/in/helezpopova>
