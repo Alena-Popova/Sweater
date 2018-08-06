@@ -56,11 +56,41 @@
         </#if>
         <div class="m-2">
             <span>${message.text}</span>
-            <i>${message.tag}</i>
+            <div class="mr-1"> <b><i>Tag: ${message.tag}</i></b></div>
         </div>
         <div class="card-footer text-muted">
+            Seller:
             ${message.authorName}
         </div>
+
+        <form method="get" action="/main/${message.getId()}" id="formBag">
+            <div class="input-group mb-3">
+                <input type="number" name="numbers" id="numberId"
+                       class="form-control ml-3 mr-1" placeholder="1"
+                       value="1"
+                       aria-label="Recipient's username with two button addons"
+                       aria-describedby="button-addon4">
+                <div class="input-group-append" id="button-addon4">
+                    <button class="btn btn-primary mr-1" type="submit">Add to bag</button>
+                </div>
+            </div>
+        </form>
+        <div class="mb-3 ml-3">
+            <button class="btn btn-warning ml-1 mr-3" type="button" data-toggle="collapse"
+                    data-target="#collapseExampleInfo" aria-expanded="false" aria-controls="collapseExampleInfo">
+                Info
+            </button>
+
+            <div class="collapse" id="collapseExampleInfo">
+                <div class="card card-body">
+                    <div>Seller: ${message.authorName}</div>
+                    <div>Price: -- </div>
+                    <div>Material: -- </div>
+                    <div>Manufacturer country: -- </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <#else>
     No message
