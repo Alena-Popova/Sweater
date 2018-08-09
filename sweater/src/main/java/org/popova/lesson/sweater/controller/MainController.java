@@ -1,8 +1,10 @@
 package org.popova.lesson.sweater.controller;
 
 import org.popova.lesson.sweater.domain.Message;
+import org.popova.lesson.sweater.domain.Product;
 import org.popova.lesson.sweater.domain.User;
 import org.popova.lesson.sweater.repos.MessageRepository;
+import org.popova.lesson.sweater.repos.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +22,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -84,12 +87,26 @@ public class MainController {
         return "main";
     }
 
-    @GetMapping("/main/{idProduct}")
-    public String activate(Model model, @PathVariable String idProduct,
-                           @RequestParam(value="numbers", required=false) String numbers) {
-        System.out.println(numbers);
+    @GetMapping("/main/{idMessage}")
+    public String activate(Model model, @PathVariable String idMessage,
+                           @RequestParam(value="answer", required=false) String answer) {
+        System.out.println(answer);
         return "redirect:/main";
     }
 
+    @GetMapping("/user-messages/{user}")
+    public String userMessges(
+            @AuthenticationPrincipal User currentUser,
+            @PathVariable User user,
+            Model model,
+            @RequestParam(required = false) Message message
+    ) {
+        Set<Message> messages = user.getMessages();
 
+        model.addAttribute("messages", messages);
+        model.addAttribute("message", message);
+        model.addAttribute("isCurrentUser", currentUser.equals(user));
+
+        return "userMessages";
+    }
 }

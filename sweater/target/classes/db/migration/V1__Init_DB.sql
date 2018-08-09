@@ -10,6 +10,19 @@ create table message (
     primary key (id)
     ) engine=MyISAM;
 
+create table product (
+    id bigint not null auto_increment,
+    filename varchar(255),
+    title varchar(255),
+    tag varchar(255),
+    price varchar(20),
+    material varchar(255) not null,
+    country varchar(255) not null,
+    description varchar(2048) not null,
+    user_id bigint,
+    primary key (id)
+    ) engine=MyISAM;
+
 create table user_role (
     user_id bigint not null,
     roles varchar(255)) engine=MyISAM;
@@ -25,6 +38,10 @@ create table usr (
 
 alter table message
     add constraint message_user_fk
+    foreign key (user_id) references usr (id);
+
+alter table product
+    add constraint product_user_fk
     foreign key (user_id) references usr (id);
 
 alter table user_role
