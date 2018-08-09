@@ -23,3 +23,7 @@ If you can suggest me improvements, welcom to try.
 [My linkedIn ] 
 
 <https://www.linkedin.com/in/helezpopova>
+
+***
+
+![screenshot of sample](C:/Users/Public/Documents/weater/1.jpg)
