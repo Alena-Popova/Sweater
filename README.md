@@ -26,4 +26,20 @@ If you can suggest me improvements, welcom to try.
 
 ***
 
-![screenshot of sample](images/1.jpg)
+![home page](images/1.jpg)
+
+
+![login](images/2.jpg)
+
+
+
+![posts](images/3.jpg)
+
+
+
+![shoping bag](images/4.jpg)
+
+
+
+![sallers bag](images/5.jpg)
+
