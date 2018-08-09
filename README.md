@@ -26,4 +26,4 @@ If you can suggest me improvements, welcom to try.
 
 ***
 
-![screenshot of sample](C:/Users/Public/Documents/weater/1.jpg)
+![screenshot of sample](images/1.jpg)
