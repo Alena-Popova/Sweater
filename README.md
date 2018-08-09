@@ -25,21 +25,27 @@ If you can suggest me improvements, welcom to try.
 <https://www.linkedin.com/in/helezpopova>
 
 ***
+home page
 
 ![home page](images/1.jpg)
-
+***
+login
 
 ![login](images/2.jpg)
-
+***
+posts
 
 
 ![posts](images/3.jpg)
-
+***
+shoping bag
 
 
 ![shoping bag](images/4.jpg)
-
+***
+sallers bag
 
 
 ![sallers bag](images/5.jpg)
+***
 
