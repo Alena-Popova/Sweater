@@ -1,6 +1,6 @@
 create table bag (
-    id bigint not null auto_increment,
+    id int8 not null,
     user_id bigint,
     primary key (id)
-    ) engine=MyISAM;
+    );
 
