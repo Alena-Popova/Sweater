@@ -1,5 +1,5 @@
 create table bag (
-    id int8 not null,
+    id bigserial not null,
     user_id bigint,
     primary key (id)
     );

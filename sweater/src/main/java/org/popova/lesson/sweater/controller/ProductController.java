@@ -88,6 +88,14 @@ public class ProductController {
         return "redirect:/products";
     }
 
+    /**
+     * купить продукт
+     * @param currentUser
+     * @param model
+     * @param idProduct
+     * @param quantity
+     * @return
+     */
     @GetMapping("/{idProduct}")
     public String activate(
             @AuthenticationPrincipal User currentUser,
@@ -103,6 +111,13 @@ public class ProductController {
     }
 
 
+    /**
+     * то что пользователь продает
+     * @param currentUser
+     * @param user
+     * @param model
+     * @return
+     */
     @GetMapping("/mysale/{user}")
     public String userSallesBag(
             @AuthenticationPrincipal User currentUser,
@@ -114,6 +129,13 @@ public class ProductController {
         return "userProductsSelling";
     }
 
+    /**
+     * то что покупает
+     * @param currentUser
+     * @param user
+     * @param model
+     * @return
+     */
     @GetMapping("/mybuy/{user}")
     public String userBuyBag(
             @AuthenticationPrincipal User currentUser,
@@ -130,18 +152,20 @@ public class ProductController {
 
         List<Product> products = bagNow.getProductsForBuy();
         Map<Product, Integer> shoppingList = new HashMap<>();
-        products.stream().forEach( pr -> {
-            int adding = 1;
-            if (shoppingList.containsKey(pr)) {
-                adding += shoppingList.get(pr);
-            }
-            shoppingList.put(pr, adding);
-        });
+        if (products != null) {
+            products.stream().forEach( pr -> {
+                int adding = 1;
+                if (shoppingList.containsKey(pr)) {
+                    adding += shoppingList.get(pr);
+                }
+                shoppingList.put(pr, adding);
+            });
+        }
         int price = products.stream().mapToInt( s ->
             Integer.parseInt(s.getPrice())
         ).sum();
         model.addAttribute("products", shoppingList.keySet());
-        model.addAttribute("quantitys", shoppingList.values());
+        model.addAttribute("quantities", shoppingList.values());
         model.addAttribute("price", price);
         return "userProductsBuying";
     }

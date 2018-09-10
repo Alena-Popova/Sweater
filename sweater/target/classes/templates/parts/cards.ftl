@@ -34,7 +34,7 @@
 
 <#macro productslist>
 <div class="card-columns">
-    <#list products as product>
+        <#list products as product>
         <div class="card my-3">
         <#if product.filename??>
         <img src="/img/${product.filename}" class="card-img-top">
@@ -81,15 +81,15 @@
                     ${product.getDescription()} </div>
             </div>
         </div>
-    <#else>
+        <#else>
           No products
-    </#list>
+        </#list>
 </div>
 </#macro>
 
 <#macro bagSell>
 <div class="card-columns">
-    <#list products as product>
+    <#list products as product >
         <div class="card my-3">
         <#if product.filename??>
         <img src="/img/${product.filename}" class="card-img-top">
@@ -126,6 +126,14 @@
         </div>
     <#else>
           No products
+    </#list>
+
+    <#list quantities as quantity>
+        <div>
+        <div class="font-weight-bold">Quantity:</div>
+            ${quantity} </div>
+        </div>
+    <#else>
     </#list>
 </div>
 </#macro>
