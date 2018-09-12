@@ -16,35 +16,51 @@ public class BagService {
     private BagRepo bagRepo;
 
     public void addToBag(User user, Product product, int numbers) {
-        List<Bag> custumBag = bagRepo.findByAuthor(user);
-        if (custumBag.size() == 0) {
-            Bag bag = new Bag(user);
-            bagRepo.save(bag);
-            custumBag = bagRepo.findByAuthor(user);
+        if (!checkBag(user)) {
+            addUserBag(user);
+            System.out.println("add userbag");
         }
-        Bag bagNow = custumBag.get(0);
-        while (numbers > 0) {
-            bagNow.getProductsForBuy().add(product);
-            numbers--;
+        Bag bagNow = bagRepo.findByAuthor(user);
+
+        if (bagNow.getQuantity().keySet().contains(product)) {
+            numbers  += bagNow.getQuantity().get(product);
         }
+
+        bagNow.getQuantity().put(product, numbers);
         bagRepo.save(bagNow);
     }
 
     public void deleteInBag(User user, Product product, int numbers) {
-        Bag bag = user.getBags().iterator().next();
-        List<Product> products = bag.getProductsForBuy();
+        if (checkBag(user)) {
+            Bag bag = bagRepo.findByAuthor(user);
+            int preNum = bag.getQuantity().get(product);
 
-        while (numbers > 0 && products.contains(product)) {
-            products.remove(product);
-            numbers--;
+            Map<Product, Integer> products = bag.getQuantity();
+            if (products.containsKey(product)) {
+                if (preNum - numbers < 0) {
+                    bag.getQuantity().remove(product);
+                } else {
+                    bag.getQuantity().put(product, preNum - numbers);
+                }
+            }
+            bagRepo.save(bag);
         }
-        bagRepo.save(bag);
     }
 
     public void deleteBag(User user) {
-        Bag bag = user.getBags().iterator().next();
-        List<Product> products = bag.getProductsForBuy();
-        products.clear();
+        if (checkBag(user)) {
+            Bag bag = user.getBag();
+            bag.getQuantity().clear();
+            bagRepo.save(bag);
+        }
+    }
+
+    private boolean checkBag(User user) {
+        return bagRepo.findByAuthor(user) != null;
+    }
+
+    private void addUserBag(User user) {
+        Bag bag = new Bag(user);
         bagRepo.save(bag);
     }
 

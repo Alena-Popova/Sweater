@@ -25,8 +25,6 @@ public class Product {
     @JoinColumn(name = "user_id")
     private User author;
 
-    @ManyToMany(mappedBy = "productsForBuy")
-    private Set<Bag> bags;
 
     //----
     @NotBlank(message = "Please, enter the price")
@@ -137,13 +135,6 @@ public class Product {
         this.description = description;
     }
 
-    public Set<Bag> getBags() {
-        return bags;
-    }
-
-    public void setBags(Set<Bag> bags) {
-        this.bags = bags;
-    }
 
     @Override
     public boolean equals(Object o) {

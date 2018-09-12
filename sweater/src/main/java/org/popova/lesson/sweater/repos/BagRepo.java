@@ -5,7 +5,9 @@ import org.popova.lesson.sweater.domain.User;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BagRepo  extends CrudRepository<Bag, Long> {
-    List<Bag> findByAuthor(User user);
+    Bag findByAuthor(User user);
+
 }

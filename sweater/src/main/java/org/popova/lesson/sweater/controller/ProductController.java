@@ -44,8 +44,8 @@ public class ProductController {
     public String main(@RequestParam(required = false, defaultValue = "") String filter, Model model) {
         Iterable<Product> products = productRepo.findAll();
 
-        if(filter != null && !filter.isEmpty()) {
-            products =  productRepo.findByTag(filter);
+        if (filter != null && !filter.isEmpty()) {
+            products = productRepo.findByTag(filter);
         } else {
             products = productRepo.findAll();
         }
@@ -90,6 +90,7 @@ public class ProductController {
 
     /**
      * купить продукт
+     *
      * @param currentUser
      * @param model
      * @param idProduct
@@ -102,17 +103,22 @@ public class ProductController {
             Model model,
             @PathVariable String idProduct,
             @RequestParam(value = "quantity", required = false) String quantity) {
-        Product pies = productRepo.findById(Long.valueOf(idProduct)).get();
-        int coutn = Integer.parseInt(quantity);
-        bagService.addToBag(currentUser, pies, coutn);
-        Iterable<Product> products = productRepo.findAll();
-        model.addAttribute("products", products);
+        if (!quantity.isEmpty()) {
+            Product pies = productRepo.findById(Long.valueOf(idProduct)).get();
+            int coutn = Integer.parseInt(quantity);
+            bagService.addToBag(currentUser, pies, coutn);
+            Iterable<Product> products = productRepo.findAll();
+            model.addAttribute("products", products);
+            System.out.println(pies.getTitle());
+            System.out.printf(quantity);
+        }
         return "redirect:/products";
     }
 
 
     /**
      * то что пользователь продает
+     *
      * @param currentUser
      * @param user
      * @param model
@@ -131,6 +137,7 @@ public class ProductController {
 
     /**
      * то что покупает
+     *
      * @param currentUser
      * @param user
      * @param model
@@ -142,30 +149,25 @@ public class ProductController {
             @PathVariable User user,
             Model model
     ) {
-        List<Bag> custumBag = bagRepo.findByAuthor(currentUser);
-        if (custumBag.size() == 0) {
+        Bag custumBag = bagRepo.findByAuthor(currentUser);
+        if (custumBag == null) {
             Bag bag = new Bag(currentUser);
             bagRepo.save(bag);
             custumBag = bagRepo.findByAuthor(currentUser);
         }
-        Bag bagNow = custumBag.get(0);
+        Set<Product> products = custumBag.getQuantity().keySet();
+        Collection<Integer> quantities = custumBag.getQuantity().values();
 
-        List<Product> products = bagNow.getProductsForBuy();
-        Map<Product, Integer> shoppingList = new HashMap<>();
-        if (products != null) {
-            products.stream().forEach( pr -> {
-                int adding = 1;
-                if (shoppingList.containsKey(pr)) {
-                    adding += shoppingList.get(pr);
-                }
-                shoppingList.put(pr, adding);
-            });
+        int price = 0;
+        int index = 0;
+        Iterator<Product> iterator = products.iterator();
+        for (int i : quantities) {
+            if (iterator.hasNext()) {
+                price +=  i * Integer.parseInt(iterator.next().getPrice());
+            }
         }
-        int price = products.stream().mapToInt( s ->
-            Integer.parseInt(s.getPrice())
-        ).sum();
-        model.addAttribute("products", shoppingList.keySet());
-        model.addAttribute("quantities", shoppingList.values());
+
+        model.addAttribute("products", custumBag.getQuantity());
         model.addAttribute("price", price);
         return "userProductsBuying";
     }

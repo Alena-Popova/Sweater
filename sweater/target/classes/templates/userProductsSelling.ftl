@@ -4,5 +4,5 @@
 <div class="alert alert-primary" role="alert">
     Ваши товары:
 </div>
-    <@d.bagSell />
+    <@d.bagSellbyUser />
 </@c.page>

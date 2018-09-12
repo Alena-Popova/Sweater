@@ -50,7 +50,6 @@
             <form method="get" action="/products/${product.getId()}" id="formBag">
                 <div class="input-group mb-3">
                     <input type="number" name="quantity"
-                           value="1"
                            class="form-control ml-3 mr-1"
                            aria-label="Recipient's username with two button addons"
                            aria-describedby="button-addon4">
@@ -89,7 +88,56 @@
 
 <#macro bagSell>
 <div class="card-columns">
-    <#list products as product >
+    <#list products as product, quantity>
+        <div class="card my-3">
+        <#if product.filename??>
+        <img src="/img/${product.filename}" class="card-img-top">
+        </#if>
+            <div class="m-2">
+                <span>${product.title}</span>
+                <div class="mr-1"><b><i>Tag: ${product.tag}</i></b></div>
+            </div>
+            <div class="card-footer text-muted">
+                Seller:
+                ${product.authorName}
+            </div>
+            <div class="card card-body">
+                <div>
+                    <div class="font-weight-bold">Seller:
+                        <div class="font-weight-normal">
+                            ${product.authorName}
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="font-weight-bold">Price:</div>
+                    <span class="input-group-text">$ ${product.getPrice()} </span></div>
+                <div>
+                    <div class="font-weight-bold">Quantity:</div>
+                    <div>${quantity} </div>
+                </div>
+                <div>
+                    <div class="font-weight-bold">Material:</div>
+                    ${product.getMaterial()}</div>
+                <div>
+                    <div class="font-weight-bold">Manufacturer country:</div>
+                    ${product.getCountry()} </div>
+                <div>
+                    <div class="font-weight-bold">Description:</div>
+                    ${product.getDescription()} </div>
+            </div>
+        </div>
+    <#else>
+          No products
+    </#list>
+
+</div>
+</#macro>
+
+
+<#macro bagSellbyUser>
+<div class="card-columns">
+    <#list products as product>
         <div class="card my-3">
         <#if product.filename??>
         <img src="/img/${product.filename}" class="card-img-top">
@@ -128,13 +176,6 @@
           No products
     </#list>
 
-    <#list quantities as quantity>
-        <div>
-        <div class="font-weight-bold">Quantity:</div>
-            ${quantity} </div>
-        </div>
-    <#else>
-    </#list>
 </div>
 </#macro>
 

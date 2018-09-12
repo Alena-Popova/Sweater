@@ -10,18 +10,16 @@ public class Bag {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User author;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "products_buy",
-            joinColumns = { @JoinColumn(name = "bag_id") },
-            inverseJoinColumns = { @JoinColumn(name = "product_id") }
-    )
-    private List<Product> productsForBuy;
-
+    @ElementCollection
+    @CollectionTable(name = "Quantitys",
+    joinColumns = @JoinColumn(name = "bag_id"))
+    @MapKeyJoinColumn(name = "product_id")
+    @Column(name = "count")
+    private Map<Product, Integer> quantity = new HashMap<Product, Integer>();
 
     public Bag() {
     }
@@ -46,12 +44,12 @@ public class Bag {
         this.author = author;
     }
 
-    public List<Product> getProductsForBuy() {
-        return productsForBuy;
+    public Map<Product, Integer> getQuantity() {
+        return quantity;
     }
 
-    public void setProductsForBuy(List<Product> productsForBuy) {
-        this.productsForBuy = productsForBuy;
+    public void setQuantity(Map<Product, Integer> quantity) {
+        this.quantity = quantity;
     }
 
     @Override

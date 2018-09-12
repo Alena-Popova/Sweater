@@ -34,8 +34,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Product> productsForSale;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Bag> bags;
+    @OneToOne(mappedBy = "author", cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY, optional = false)
+    private Bag bag;
 
     @Email(message = "Email is not correct")
     @NotBlank(message = "Email can't be empty")
@@ -146,12 +147,12 @@ public class User implements UserDetails {
         this.productsForSale = productsForSale;
     }
 
-    public Set<Bag> getBags() {
-        return bags;
+    public Bag getBag() {
+        return bag;
     }
 
-    public void setBags(Set<Bag> bags) {
-        this.bags = bags;
+    public void setBag(Bag bag) {
+        this.bag = bag;
     }
 
     @Override
